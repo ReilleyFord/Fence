@@ -1,11 +1,11 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <algorithm>
 #include <filesystem>
+#include <algorithm>
 
-namespace fs = std::filesystem;
 using namespace std;
+namespace fs = std::filesystem;
 
 const string getInput(string question) {
   string output;
@@ -19,7 +19,7 @@ const vector<fs::path> getFiles(string &directory) {
   vector<fs::path> files;
   try {
     for(fs::path const &file : fs::directory_iterator(directory)) {
-      string ext = file.extension();
+      string ext = file.extension().string();
       if(ext == ".mp4" || ext == ".mkv"){
         files.push_back(file.filename());
       }
