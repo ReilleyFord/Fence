@@ -7,7 +7,7 @@
 namespace fs = std::filesystem;
 using namespace std;
 
-const string getInput(string &question) {
+const string getInput(string question) {
   string output;
   cout << question << endl;
   getline(cin, output);
@@ -25,6 +25,10 @@ const vector<fs::path> getFiles(string &directory) {
       }
     }
     sort(files.begin(), files.end());
+    cout << "Files in directory " << directory << endl;
+    for(fs::path const &file : files) {
+      cout << file.filename() << endl;
+    }
   } catch(exception &e) {
     cout << e.what() << endl;
   }
@@ -43,24 +47,25 @@ const void renameFiles(string &ext, string &show, vector<fs::path> files) {
     }
     file.replace_filename(name);
     file.replace_extension(ext);
-    cout << file.filename() << endl;
+    cout << "Renamed file: " << file.filename() << endl;
   }
 }
 
 int main() {
+  string cont;
+  do {
+    string inputDir = getInput("Input Directory: ");
+    string extension = getInput("Filetype (mkv or mp4):");
+    string show = getInput("Show and season (eg. Seinfeld S01)");
 
-  string question = "Input Directory: ";
-  string inputDir = getInput(question);
+    vector<fs::path> files = getFiles(inputDir);
+    renameFiles(extension, show, files);
 
-  question = "Filetype (mkv or mp4):";
-  string extension = getInput(question);
+    cont = getInput("Press 'y' to enter another \nEnter any other key to exit");
 
-  question = "Show and season (eg. Seinfeld S01)";
-  string show = getInput(question);
+  } while(cont == "Y" || cont == "y");
 
-  vector<fs::path> files = getFiles(inputDir);
 
-  renameFiles(extension, show, files);
 
   cin.clear();
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
